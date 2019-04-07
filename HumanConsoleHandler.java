@@ -13,10 +13,10 @@ public class HumanConsoleHandler implements ConsoleHandler{
     private static Dao humanDao;
 
 
-     public static void handle() throws IllegalAccessException {
+     public void handle() throws IllegalAccessException {
         while (true) {
             Scanner scanner = new Scanner(System.in);
-            System.out.println("1 - если внести человека, 2 - если получить человека, 3 - для вихода");
+            System.out.println("1 - for enter human, 2 - for get human, 3 - return back");
             int consoleChoice = scanner.nextInt();
             switch (consoleChoice) {
                 case 1:
@@ -31,11 +31,11 @@ public class HumanConsoleHandler implements ConsoleHandler{
         }
     }
 
-    private static void addClientInfo(Scanner scanner) {
-        System.out.println("Введите информацию о человеке");
-        System.out.println("Введите имя");
+    private void addClientInfo(Scanner scanner) {
+        System.out.println("Enter info about human");
+        System.out.println("Enter name");
         String name = scanner.next();
-        System.out.println("Введите количество лет");
+        System.out.println("Enter age");
         int age = scanner.nextInt();
         Human human = new Human(name, age);
         humanDao.save(human);
