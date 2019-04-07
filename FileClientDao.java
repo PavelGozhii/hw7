@@ -12,7 +12,7 @@ public class FileClientDao implements Dao {
         try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("storageClient.dat"))) {
             objectOutputStream.writeObject(client);
         } catch (IOException e) {
-            System.out.println("Не удалось записать клиента в базу");
+            System.out.println("Failed to write client to database");
         }
     }
 
@@ -20,8 +20,8 @@ public class FileClientDao implements Dao {
         try (ObjectInputStream inputObjectStream = new ObjectInputStream(new FileInputStream("storageClient.dat"))) {
             return (Model) inputObjectStream.readObject();
         } catch (Exception e) {
-            System.out.println("Клиент не найден в системе");
-            return null;
+            System.out.println("Client not found in system");
+            throw new NullPointerException();
         }
     }
 }
