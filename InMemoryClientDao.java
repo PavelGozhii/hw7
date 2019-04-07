@@ -19,6 +19,6 @@ public class InMemoryClientDao implements Dao {
 
     @Override
     public Model get() {
-        return (Model) inMemoryStorage.get(0);
+        return inMemoryStorage.get(0);
     }
 }
