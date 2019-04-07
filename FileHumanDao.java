@@ -12,7 +12,7 @@ public class FileHumanDao implements Dao {
         try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("storageHuman.dat"))) {
             objectOutputStream.writeObject(human);
         } catch (IOException e) {
-            System.out.println("Не удалось записать человека в базу");
+            System.out.println("Could not write a person to the database");
         }
     }
 
@@ -20,8 +20,8 @@ public class FileHumanDao implements Dao {
         try (ObjectInputStream inputObjectStream = new ObjectInputStream(new FileInputStream("storageHuman.dat"))) {
             return (Model) inputObjectStream.readObject();
         } catch (Exception e) {
-            System.out.println("Чееловек не найден в системе");
-            return null;
+            System.out.println("The person is not found in the system");
+            throw new NullPointerException();
         }
     }
 }
