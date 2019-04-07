@@ -19,7 +19,7 @@ public class ClientDaoFactory {
                 return inMemoryDao;
             }
         } catch (IOException e) {
-            System.out.println("Нет доступа к файлу");
+            System.out.println("There is no access to the file");
         }
         if (isFileDao) {
             return fileDao;
