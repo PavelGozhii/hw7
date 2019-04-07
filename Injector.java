@@ -13,7 +13,7 @@ public class Injector {
 
     public static void create() throws IllegalAccessException {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Выберете объект: 1 - Клиент,  2 - Человек, 3 - для вихода");
+        System.out.println("Choose object: 1 - Client,  2 - Human, 3 - for exit");
         int a = scanner.nextInt();
         switch (a) {
             case 1:
@@ -23,7 +23,7 @@ public class Injector {
                 injectDependencyForHuman();
                 break;
             default:
-                return;
+                System.exit(0);
         }
 
     }
@@ -39,17 +39,17 @@ public class Injector {
                 field.setAccessible(true);
                 boolean fileDao = fileClientDaoClass.isAnnotationPresent(Component.class);
                 if (fileDao) {
-                    System.out.println("Работа с файлами разрешена");
+                    System.out.println("Working with files is allowed");
                 }
                 boolean inMemoryDao = inMemoryClientDao.isAnnotationPresent(Component.class);
                 if (inMemoryDao) {
-                    System.out.println("Работа с ОЗУ разрешена");
+                    System.out.println("Working with RAM is allowed");
                 }
-                Dao clientDao = (Dao) ClientDaoFactory.getClientDao(fileDao, inMemoryDao);
+                Dao clientDao = ClientDaoFactory.getClientDao(fileDao, inMemoryDao);
                 field.set(null, clientDao);
             }
         }
-        ClientConsoleHandler.handle();
+        new ClientConsoleHandler().handle();
     }
 
     private static void injectDependencyForHuman() throws IllegalAccessException {
@@ -63,16 +63,16 @@ public class Injector {
                 field.setAccessible(true);
                 boolean fileDao = fileHumanDaoClass.isAnnotationPresent(Component.class);
                 if (fileDao) {
-                    System.out.println("Робота с файлами разрешена");
+                    System.out.println("Working with files is allowed");
                 }
                 boolean inMemoryDao = inMemoryHumanDaoClass.isAnnotationPresent(Component.class);
                 if (inMemoryDao) {
-                    System.out.println("Работа с ОЗУ разрешена");
+                    System.out.println("Working with RAM is allowed");
                 }
-                Dao humanDao = (Dao) HumanDaoFactory.getHumanDao(fileDao, inMemoryDao);
+                Dao humanDao = HumanDaoFactory.getHumanDao(fileDao, inMemoryDao);
                 field.set(null, humanDao);
             }
         }
-        HumanConsoleHandler.handle();
+        new HumanConsoleHandler().handle();
     }
 }
