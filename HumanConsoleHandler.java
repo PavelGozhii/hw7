@@ -7,7 +7,7 @@ import mate.academy.model.Human;
 
 import java.util.Scanner;
 
-public class HumanConsoleHandler implements ConsoleHandler{
+public class HumanConsoleHandler{
 
     @Inject
     private static Dao humanDao;
@@ -17,7 +17,7 @@ public class HumanConsoleHandler implements ConsoleHandler{
         while (true) {
             Scanner scanner = new Scanner(System.in);
             System.out.println("1 - for enter human, 2 - for get human, 3 - return back");
-            int consoleChoice = scanner.nextInt();
+            int consoleChoice = Integer.valueOf(scanner.next());
             switch (consoleChoice) {
                 case 1:
                     addClientInfo(scanner);
@@ -36,9 +36,7 @@ public class HumanConsoleHandler implements ConsoleHandler{
         System.out.println("Enter name");
         String name = scanner.next();
         System.out.println("Enter age");
-        int age = scanner.nextInt();
+        int age = Integer.valueOf(scanner.next());
         Human human = new Human(name, age);
         humanDao.save(human);
     }
-
-}
