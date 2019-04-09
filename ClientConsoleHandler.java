@@ -7,7 +7,7 @@ import mate.academy.model.Client;
 
 import java.util.Scanner;
 
-public class ClientConsoleHandler implements ConsoleHandler {
+public class ClientConsoleHandler{
 
     @Inject
     private static Dao clientDao;
@@ -15,8 +15,8 @@ public class ClientConsoleHandler implements ConsoleHandler {
     public void handle() throws IllegalAccessException {
         while (true) {
             Scanner scanner = new Scanner(System.in);
-            System.out.println("1 - for enter client, 2 - for get clien, 3 - return back");
-            int consoleChoice = scanner.nextInt();
+            System.out.println("1 - for enter client, 2 - for get client, 3 - return back");
+            int consoleChoice = Integer.valueOf(scanner.next());
             switch (consoleChoice) {
                 case 1:
                     addClientInfo(scanner);
@@ -43,4 +43,3 @@ public class ClientConsoleHandler implements ConsoleHandler {
 
 
 }
-
