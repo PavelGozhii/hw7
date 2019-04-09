@@ -2,14 +2,15 @@ package mate.academy.di;
 
 import mate.academy.dao.*;
 import mate.academy.factory.ClientDaoFactory;
-import mate.academy.factory.HumanDaoFactory;
 import mate.academy.handler.ClientConsoleHandler;
 import mate.academy.handler.HumanConsoleHandler;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Injector {
+
 
     public static void create() throws IllegalAccessException {
         Scanner scanner = new Scanner(System.in);
@@ -30,47 +31,43 @@ public class Injector {
 
     private static void injectDependencyForClient() throws IllegalAccessException {
         Class consoleHandlerClass = ClientConsoleHandler.class;
-        Class fileClientDaoClass = FileClientDao.class;
-        Class inMemoryClientDao = InMemoryClientDao.class;
+        ArrayList<Class> classes = new ArrayList<>();
+        classes.add(FileClientDao.class);
+        classes.add(InMemoryClientDao.class);
 
         Field[] fields = consoleHandlerClass.getDeclaredFields();
         for (Field field : fields) {
             if (field.isAnnotationPresent(Inject.class)) {
                 field.setAccessible(true);
-                boolean fileDao = fileClientDaoClass.isAnnotationPresent(Component.class);
-                if (fileDao) {
-                    System.out.println("Working with files is allowed");
+                field.set(null, checkAccess(classes));
                 }
-                boolean inMemoryDao = inMemoryClientDao.isAnnotationPresent(Component.class);
-                if (inMemoryDao) {
-                    System.out.println("Working with RAM is allowed");
-                }
-                Dao clientDao = ClientDaoFactory.getClientDao(fileDao, inMemoryDao);
-                field.set(null, clientDao);
             }
-        }
         new ClientConsoleHandler().handle();
     }
 
+    private static Dao checkAccess(ArrayList<Class> classes){
+        boolean[] dao = new boolean[classes.size()];
+        for(int e = 0; e < classes.size(); e++){
+            dao[e] = classes.get(e).isAnnotationPresent(Component.class);
+            if(dao[e]){
+                System.out.println(classes.get(e).getName() + " allowed.");
+            }
+        }
+        Dao clientDao = ClientDaoFactory.getClientDao(dao[0], dao[1]);
+        return clientDao;
+    }
+
+
     private static void injectDependencyForHuman() throws IllegalAccessException {
         Class consoleHandlerClass = HumanConsoleHandler.class;
-        Class fileHumanDaoClass = FileHumanDao.class;
-        Class inMemoryHumanDaoClass = InMemoryHumanDao.class;
-
+        ArrayList<Class> classes = new ArrayList();
+        classes.add(FileHumanDao.class);
+        classes.add(InMemoryHumanDao.class);
         Field[] fields = consoleHandlerClass.getDeclaredFields();
         for (Field field : fields) {
             if (field.isAnnotationPresent(Inject.class)) {
                 field.setAccessible(true);
-                boolean fileDao = fileHumanDaoClass.isAnnotationPresent(Component.class);
-                if (fileDao) {
-                    System.out.println("Working with files is allowed");
-                }
-                boolean inMemoryDao = inMemoryHumanDaoClass.isAnnotationPresent(Component.class);
-                if (inMemoryDao) {
-                    System.out.println("Working with RAM is allowed");
-                }
-                Dao humanDao = HumanDaoFactory.getHumanDao(fileDao, inMemoryDao);
-                field.set(null, humanDao);
+                field.set(null, checkAccess(classes));
             }
         }
         new HumanConsoleHandler().handle();
